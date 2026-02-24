@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0f172a;
+  --color-secondary: #334155;
+  --color-accent: #0ea5e9;
+}
+
+body {
+  @apply bg-gray-50 text-slate-900 font-sans antialiased;
+}
+
+input,
+textarea,
+select {
+  @apply border-gray-300 focus:ring-accent focus:border-accent;
+}
