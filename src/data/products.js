@@ -1,5 +1,119 @@
 export const products = [
-    { id: 1, name: "Solar Cleaning Brush (Model X)", hsn: "8479", price: 15000 },
-    { id: 2, name: "Extension Pole 5M", hsn: "7616", price: 3000 },
-    { id: 3, name: "Nylon Bristle Set", hsn: "9603", price: 1200 },
+    {
+        id: 1,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        hsn: "96039000",
+        price: 1500,
+        default_price: 1500,
+        default_gst_percentage: 18
+    },
+    {
+        id: 2,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        hsn: "96039000",
+        price: 2500,
+        default_price: 2500,
+        default_gst_percentage: 18
+    },
+    {
+        id: 3,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITH WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        hsn: "96039000",
+        price: 3500,
+        default_price: 3500,
+        default_gst_percentage: 18
+    },
+    {
+        id: 4,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        hsn: "96039000",
+        price: 1200,
+        default_price: 1200,
+        default_gst_percentage: 18
+    },
+    {
+        id: 5,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        hsn: "96039000",
+        price: 2200,
+        default_price: 2200,
+        default_gst_percentage: 18
+    },
+    {
+        id: 6,
+        name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        product_name: "MODULE CLEANING NYLON BRUSH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        hsn: "96039000",
+        price: 3200,
+        default_price: 3200,
+        default_gst_percentage: 18
+    },
+    {
+        id: 7,
+        name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        product_name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 6FT/2MTR",
+        hsn: "96039000",
+        price: 1300,
+        default_price: 1300,
+        default_gst_percentage: 18
+    },
+    {
+        id: 8,
+        name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        product_name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 12FT/4MTR",
+        hsn: "96039000",
+        price: 2300,
+        default_price: 2300,
+        default_gst_percentage: 18
+    },
+    {
+        id: 9,
+        name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        product_name: "MODULE CLEANING MICROFIBER WASHABLE CLOTH WITH TELESCOPIC EXTENDABLE POLE WITHOUT WATER ARRANGEMENT - POLE LENGTH OF 18FT/6MTR",
+        hsn: "96039000",
+        price: 3300,
+        default_price: 3300,
+        default_gst_percentage: 18
+    },
+    {
+        id: 10,
+        name: "SINGLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH SMPS WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        product_name: "SINGLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH SMPS WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        hsn: "8479",
+        price: 18000,
+        default_price: 18000,
+        default_gst_percentage: 18
+    },
+    {
+        id: 11,
+        name: "DOUBLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH SMPS WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        product_name: "DOUBLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH SMPS WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        hsn: "8479",
+        price: 25000,
+        default_price: 25000,
+        default_gst_percentage: 18
+    },
+    {
+        id: 12,
+        name: "SINGLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH LITHIUM BATTERY WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        product_name: "SINGLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH LITHIUM BATTERY WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        hsn: "8479",
+        price: 28000,
+        default_price: 28000,
+        default_gst_percentage: 18
+    },
+    {
+        id: 13,
+        name: "DOUBLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH LITHIUM BATTERY WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        product_name: "DOUBLE ROUND DISC MOTORISED NYLON CLEANING BRUSH WITH LITHIUM BATTERY WITH HEAVY DUTY ALUMINIUM EXTENDABLE POLE - POLE LENGTH OF 12FT/4MTR",
+        hsn: "8479",
+        price: 35000,
+        default_price: 35000,
+        default_gst_percentage: 18
+    }
 ];
