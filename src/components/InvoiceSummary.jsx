@@ -1,14 +1,5 @@
 import React from 'react';
-
-
-// Simple Number to Words converter (Indian System placeholder)
-// Ideally this should be in a utility file
-function numberToWords(num) {
-    // Use a library or a robust function in production
-    // For now, return a placeholder or simple logic
-    // Trying to implement a basic one here for speed
-    return "Rupees " + num + " Only"; // Placeholder, will fix if requested or use library
-}
+import { numberToWords } from '../lib/utils';
 
 export function InvoiceSummary({ items, taxMode }) {
     const subtotal = items.reduce((sum, item) => {
@@ -17,42 +8,56 @@ export function InvoiceSummary({ items, taxMode }) {
         return sum + (basic - disc);
     }, 0);
 
-    const taxRate = taxMode === 'IGST' ? 18 : 18; // Both total 18%
-    const taxAmount = subtotal * (taxRate / 100);
-    const grandTotal = subtotal + taxAmount;
+    let sgst = 0;
+    let cgst = 0;
+    let igst = 0;
+    let totalGst = 0;
+
+    if (taxMode === 'SGST_CGST') {
+        sgst = subtotal * 0.09;
+        cgst = subtotal * 0.09;
+        totalGst = sgst + cgst;
+    } else if (taxMode === 'IGST') {
+        igst = subtotal * 0.18;
+        totalGst = igst;
+    }
+
+    const grandTotal = Math.round(subtotal + totalGst);
 
     return (
         <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-            <div className="text-sm text-slate-500 max-w-xs">
-                {/* Helper text or notes can go here */}
+            <div className="text-sm font-bold text-slate-900 uppercase max-w-sm">
+                <span>TOTAL AMOUNT WORDS - [ {numberToWords(grandTotal)} ]</span>
             </div>
 
             <div className="w-full md:w-80 space-y-3">
-                <div className="flex justify-between text-sm text-slate-600">
-                    <span>Sub New Total</span>
+                <div className="flex justify-between text-sm text-slate-900 font-bold uppercase">
+                    <span>SUB TOTAL - RS</span>
                     <span>₹{subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                 </div>
 
-                {taxMode === 'IGST' ? (
-                    <div className="flex justify-between text-sm text-slate-600">
-                        <span>IGST (18%)</span>
-                        <span>₹{taxAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                    </div>
-                ) : (
-                    <>
-                        <div className="flex justify-between text-sm text-slate-600">
-                            <span>CGST (9%)</span>
-                            <span>₹{(taxAmount / 2).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                        </div>
-                        <div className="flex justify-between text-sm text-slate-600">
-                            <span>SGST (9%)</span>
-                            <span>₹{(taxAmount / 2).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                        </div>
-                    </>
-                )}
+                <div className="flex justify-between text-sm text-slate-900 font-bold uppercase">
+                    <span>SGST - 9%</span>
+                    <span>₹{sgst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                </div>
+
+                <div className="flex justify-between text-sm text-slate-900 font-bold uppercase">
+                    <span>CGST - 9%</span>
+                    <span>₹{cgst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                </div>
+
+                <div className="flex justify-between text-sm text-slate-900 font-bold uppercase">
+                    <span>IGST - 18%</span>
+                    <span>₹{igst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                </div>
+
+                <div className="flex justify-between text-sm text-slate-900 font-bold uppercase pt-2 border-t border-slate-100">
+                    <span>TOTAL GST - 18%</span>
+                    <span>₹{totalGst.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                </div>
 
                 <div className="flex justify-between items-center pt-3 border-t border-slate-200">
-                    <span className="font-bold text-slate-900">Grand Total</span>
+                    <span className="font-bold text-slate-900 uppercase">TOTAL NET AMOUNT INCL GST - RS</span>
                     <span className="font-bold text-xl text-slate-900">
                         ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </span>

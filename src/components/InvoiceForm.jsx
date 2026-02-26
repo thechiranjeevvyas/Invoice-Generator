@@ -30,12 +30,12 @@ export function InvoiceForm({ data, onChange }) {
 
             {/* Bill To Address Copypasta */}
             <div>
-                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Bill To / Address</label>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">BILL TO</label>
                 <textarea
                     value={data.clientAddress}
-                    onChange={(e) => onChange('clientAddress', e.target.value)}
-                    placeholder="Paste full client address here..."
-                    className="w-full h-24 text-sm p-3 border rounded-lg resize-none placeholder:text-slate-400"
+                    onChange={(e) => onChange('clientAddress', e.target.value.toUpperCase())}
+                    placeholder="PASTE FULL CLIENT ADDRESS HERE..."
+                    className="w-full h-24 text-sm font-bold uppercase p-3 border rounded-lg resize-none placeholder:text-slate-400"
                 ></textarea>
             </div>
 
@@ -92,6 +92,13 @@ export function InvoiceForm({ data, onChange }) {
                             }`}
                     >
                         SGST / CGST
+                    </button>
+                    <button
+                        onClick={() => onChange('taxMode', 'NO_TAX')}
+                        className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${data.taxMode === 'NO_TAX' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                            }`}
+                    >
+                        No Tax
                     </button>
                 </div>
             </div>

@@ -144,16 +144,20 @@ export async function generateExcelInvoice({ invoiceData, items, headerImage, si
     sheet.getCell(`A${addrRow}`).font = { bold: true, size: 10 };
 
     sheet.mergeCells(`A${addrRow + 1}:C${endAddrRow}`);
-    sheet.getCell(`A${addrRow + 1}`).value = invoiceData.clientAddress;
+    sheet.getCell(`A${addrRow + 1}`).value = (invoiceData.clientAddress || '').toUpperCase();
     sheet.getCell(`A${addrRow + 1}`).alignment = { vertical: 'top', wrapText: true };
+    sheet.getCell(`A${addrRow + 1}`).font = { bold: true, size: 10 };
 
     sheet.mergeCells(`D${addrRow}:G${addrRow}`);
     sheet.getCell(`D${addrRow}`).value = "SHIP TO";
     sheet.getCell(`D${addrRow}`).font = { bold: true, size: 10 };
 
     sheet.getCell(`D${addrRow + 1}`).value = "SAME AS BILLING";
-    sheet.getCell(`D${addrRow + 2}`).value = "Despatch Through: By Buyer";
-    sheet.getCell(`D${addrRow + 3}`).value = "Delivery term: Upto Ex-Vaishali, Ghaziabad";
+    sheet.getCell(`D${addrRow + 1}`).font = { bold: true, size: 10 };
+    sheet.getCell(`D${addrRow + 2}`).value = "DESPATCH THROUGH: BY BUYER";
+    sheet.getCell(`D${addrRow + 2}`).font = { bold: true, size: 10 };
+    sheet.getCell(`D${addrRow + 3}`).value = "DELIVERY TERM: UPTO EX-VAISHALI, GHAZIABAD";
+    sheet.getCell(`D${addrRow + 3}`).font = { bold: true, size: 10 };
 
     for (let r = addrRow; r <= endAddrRow; r++) {
         sheet.getCell(`A${r}`).border = { left: { style: 'thin' } };
@@ -172,8 +176,8 @@ export async function generateExcelInvoice({ invoiceData, items, headerImage, si
     // --- 3. TABLE HEADERS ---
     const tHeadRow = endAddrRow + 1;
     const headers = [
-        'S.N.', 'DESCRIPTION/MATERIAL', 'HSN CODE', 'QTY\n(Pcs.)',
-        'UNIT BASIC\nPRICE', 'UNIT PRICE\nAFTER DISC- 6%', 'Grand Total (Inclusive\nof GST)'
+        'S.N.', 'DESCRIPTION/MATERIAL', 'HSN CODE', 'QTY\n(PCS.)',
+        'BASIC PRICE RS', 'UNIT RATE\nAFTER DISCOUNT', 'TOTAL AMOUNT - RS'
     ];
 
     ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach((col, i) => {
@@ -223,48 +227,75 @@ export async function generateExcelInvoice({ invoiceData, items, headerImage, si
     // --- 5. FOOTER ---
     const fRow = currentRow;
 
-    sheet.getCell(`B${fRow}`).value = "SUB-TOTAL- RS";
+    sheet.getCell(`B${fRow}`).value = "SUB TOTAL - RS";
     sheet.getCell(`B${fRow}`).font = { bold: true };
     sheet.getCell(`G${fRow}`).value = { formula: `SUM(H${tHeadRow + 1}:H${currentRow - 1})` };
     sheet.getCell(`G${fRow}`).font = { bold: true };
     sheet.getCell(`G${fRow}`).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
 
+    // Default factors
+    let sgstFactor = 0;
+    let cgstFactor = 0;
+    let igstFactor = 0;
+    let totalFactor = 0;
+
+    if (invoiceData.taxMode === 'SGST_CGST') {
+        sgstFactor = 0.09;
+        cgstFactor = 0.09;
+        totalFactor = 0.18;
+    } else if (invoiceData.taxMode === 'IGST') {
+        igstFactor = 0.18;
+        totalFactor = 0.18;
+    }
+
     let footerOffset = 1;
-    if (!isIGST) {
-        sheet.getCell(`B${fRow + footerOffset}`).value = "SGST-9%";
-        sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*0.09` };
-        sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
-        footerOffset++;
 
-        sheet.getCell(`B${fRow + footerOffset}`).value = "CGST-9%";
-        sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*0.09` };
-        sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
-        footerOffset++;
-    }
-
-    if (isIGST) {
-        sheet.getCell(`B${fRow + footerOffset}`).value = "IGST-18%";
-        sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*0.18` };
-        sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
-        footerOffset++;
-    }
-
-    sheet.getCell(`B${fRow + footerOffset}`).value = "TOTAL GST-18%";
+    // SGST
+    sheet.getCell(`B${fRow + footerOffset}`).value = "SGST - 9%";
     sheet.getCell(`B${fRow + footerOffset}`).font = { bold: true };
-    sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*0.18` };
+    sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*${sgstFactor}` };
+    sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
+    footerOffset++;
+
+    // CGST
+    sheet.getCell(`B${fRow + footerOffset}`).value = "CGST - 9%";
+    sheet.getCell(`B${fRow + footerOffset}`).font = { bold: true };
+    sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*${cgstFactor}` };
+    sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
+    footerOffset++;
+
+    // IGST
+    sheet.getCell(`B${fRow + footerOffset}`).value = "IGST - 18%";
+    sheet.getCell(`B${fRow + footerOffset}`).font = { bold: true };
+    sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*${igstFactor}` };
+    sheet.getCell(`G${fRow + footerOffset}`).border = { right: { style: 'thin' }, left: { style: 'thin' } };
+    footerOffset++;
+
+    // TOTAL GST
+    sheet.getCell(`B${fRow + footerOffset}`).value = "TOTAL GST - 18%";
+    sheet.getCell(`B${fRow + footerOffset}`).font = { bold: true };
+    sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}*${totalFactor}` };
     sheet.getCell(`G${fRow + footerOffset}`).font = { bold: true };
     sheet.getCell(`G${fRow + footerOffset}`).border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
     footerOffset++;
 
-    sheet.getCell(`B${fRow + footerOffset}`).value = "TOTAL NET AMOUNT INCL GST-RS";
+    // TOTAL NET AMOUNT
+    sheet.getCell(`B${fRow + footerOffset}`).value = "TOTAL NET AMOUNT INCL GST - RS";
     sheet.getCell(`B${fRow + footerOffset}`).font = { bold: true };
     sheet.getCell(`G${fRow + footerOffset}`).value = { formula: `G${fRow}+G${fRow + footerOffset - 1}` };
     sheet.getCell(`G${fRow + footerOffset}`).font = { bold: true, size: 11 };
     sheet.getCell(`G${fRow + footerOffset}`).border = { top: { style: 'thin' }, bottom: { style: 'double' }, left: { style: 'thin' }, right: { style: 'thin' } };
 
+    // Evaluate total for dynamic "Amount in Words" (using subtotal * totalFactor for tax offset)
+    const subtotalCalc = items.reduce((sum, item) => sum + (item.qty * item.price * (1 - (item.discount || 6) / 100)), 0);
+    const finalCalculatedAmount = Math.round(subtotalCalc + (subtotalCalc * totalFactor));
+
+    // Dynamic import to break dependency cycle if not auto-resolving statically
+    const { numberToWords } = await import('../lib/utils.js');
+
     footerOffset++;
     sheet.mergeCells(`A${fRow + footerOffset}:G${fRow + footerOffset}`);
-    sheet.getCell(`A${fRow + footerOffset}`).value = "TOTAL AMOUNT WORDS- [Five Hundred Only]";
+    sheet.getCell(`A${fRow + footerOffset}`).value = `TOTAL AMOUNT WORDS - [ ${numberToWords(finalCalculatedAmount).toUpperCase()} ]`;
     sheet.getCell(`A${fRow + footerOffset}`).font = { bold: true };
     sheet.getCell(`A${fRow + footerOffset}`).border = { top: { style: 'thin' }, bottom: { style: 'thin' } };
 
