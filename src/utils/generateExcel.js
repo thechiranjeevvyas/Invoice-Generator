@@ -21,99 +21,40 @@ export async function generateExcelInvoice({ invoiceData, items, headerImage, si
         { key: 'taxable', width: 0, hidden: true }
     ];
 
-    // --- 2. HEADER SECTION ---
+    // --- 2. HEADER SECTION (UNIFIED MERGED BLOCK) ---
+    const headerEndRow = 5;
+    sheet.mergeCells(`A1:G${headerEndRow}`);
+    const r1 = sheet.getCell('A1');
+    r1.value = {
+        richText: [
+            { font: { name: 'Calibri', size: 26, bold: true, color: { argb: 'FFFF0000' } }, text: "RAEMA STAR SOLAR PRIVATE LIMITED\n" },
+            { font: { name: 'Calibri', size: 10, color: { argb: 'FF000000' } }, text: "K-7, LEELA HOMES, PLOT NO. 23, SECTOR-4, VAISHALI, GHAZIABAD 201 010 NCR India.\n" },
+            { font: { name: 'Calibri', size: 10, color: { argb: 'FF000000' } }, text: "TEL NO. : 0120-4523496, +91 995 8469 555, WebPage : www.raemasolar.com, manish@raemasolar.com\n" },
+            { font: { name: 'Calibri', size: 10, color: { argb: 'FF000000' } }, text: "CIN: U74999UP2017PTC098649, PAN: AAICR6230L, GSTIN : 09AAICR6230L1ZO" }
+        ]
+    };
+    r1.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+
+    // Set row heights to ensure everything fits (5 rows * 18 = 90px total)
+    for (let i = 1; i <= headerEndRow; i++) {
+        sheet.getRow(i).height = 18;
+    }
+
     if (headerImage) {
-        // IMAGE HEADER LOGIC
-        // Merge Top Rows for Image
-        sheet.mergeCells('A1:G6');
         const imageId = workbook.addImage({
             base64: headerImage,
-            extension: 'png', // Assumes PNG or compatible base64
+            extension: 'png',
         });
 
+        // Position logo at top-left inside A1 with explicit dimensions to preserve aspect ratio
         sheet.addImage(imageId, {
-            tl: { col: 0, row: 0 }, // A1
-            br: { col: 7, row: 6 }  // End of G6 (col 7 is H, so col 7 boundary is G-H line. 0-indexed: A=0, G=6. So col:7 is correct for inclusive width)
+            tl: { col: 0.1, row: 0.2 }, // A1 with small padding
+            ext: { width: 140, height: 75 } // Absolute pixels fixed size
         });
-
-        // Clear any text just in case, though merging should handle it.
-    } else {
-        // TEXT HEADER FALLBACK (Previous Logic)
-        sheet.mergeCells('A1:G1');
-        const r1 = sheet.getCell('A1');
-        r1.value = "RAEMA STAR SOLAR PRIVATE LIMITED";
-        r1.font = { name: 'Calibri', size: 24, bold: true, color: { argb: 'FFFF0000' } };
-        r1.alignment = { horizontal: 'center', vertical: 'middle' };
-
-        sheet.mergeCells('A2:G2');
-        const r2 = sheet.getCell('A2');
-        r2.value = "[Office Address: 123, Solar Tech Park] TEL NO. : 01234567890, +91 99995120";
-        r2.font = { name: 'Calibri', size: 10, underline: true };
-        r2.alignment = { horizontal: 'center' };
-
-        sheet.mergeCells('A3:G3');
-        const r3 = sheet.getCell('A3');
-        r3.value = "WebPage : www.raemasolar.com, test@raemasolar.com";
-        r3.font = { name: 'Calibri', size: 10, underline: true };
-        r3.alignment = { horizontal: 'center' };
-
-        sheet.mergeCells('A4:G4');
-        const r4 = sheet.getCell('A4');
-        r4.value = "CIN: U756789UP2020PTC09898, PAN: AAICR645P, GSTIN : 09AAICR645P1Z0";
-        r4.font = { name: 'Calibri', size: 10, underline: true, bold: true };
-        r4.alignment = { horizontal: 'center' };
-
-        sheet.mergeCells('A5:G5');
-        const r5 = sheet.getCell('A5');
-        r5.value = "PROFROMA INVOICE";
-        r5.font = { name: 'Calibri', size: 14, bold: true };
-        r5.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
-        r5.alignment = { horizontal: 'center', vertical: 'middle' };
-        sheet.getRow(5).height = 25;
     }
 
-    // NOTE: If Image is used, we used A1:G6. Text used A1:G5.
-    // The content below starts at Row 6 for Text, or Row 7 for Image?
-    // Text logic had: Row 6 as "Invoice Ref".
-    // Image logic occupies A1:G6. Uses G6 boundary.
-    // So Image covers rows 1,2,3,4,5,6.
-    // Next content should accept Row 7 as start?
-    // But wait, the detailed logic below assumes specific rows?
-    // Let's adjust rows dynamically?
-    // Actually, standardizing on Row 7 for context might be safer if Image covers 6 rows.
-    // In Text mode, we used up to Row 5. Row 6 was Ref.
-    // If Image uses up to Row 6. Row 7 should be Ref.
-    // Let's shift everything down by 1 if Image is present?
-    // Or just ensure Image takes 1-5?
-    // Text header used 1-5.
-    // Screenshot logic used Row 5 for Yellow Bar.
-    // Row 6 for Ref.
-    // User says "Merge A1 to G6".
-    // So Image takes 6 rows.
-    // Text took 5 rows.
-    // I should probably pad the Text version or adjust the Image version to match, OR use a dynamic startRow.
+    const contentStartRow = headerEndRow + 1;
 
-    // Let's use dynamic start row.
-    const contentStartRow = headerImage ? 7 : 6;
-
-    // Row 6/7: Invoice Ref & Order Ref
-    if (headerImage) {
-        // If image is there, we skip the Yellow Bar? Or is Yellow Bar part of Image?
-        // User says "Image replaces Text Fallback".
-        // Usually full header image includes Company Name, Address, etc.
-        // Does it include "Proforma Invoice" yellow bar? Probably not.
-        // But user said "Merge A1:G6... This creates one massive blank space... Image replaces text entirely".
-        // I will assume it replaces the Yellow Bar too if that was row 5.
-        // IF NOT, I might need to add Yellow Bar below image.
-        // Safest: Check prompt "Do not write any text... in the header rows".
-        // I will assume Image contains everything up to the Data part.
-        // But typically "Invoice Ref" is dynamic.
-        // Prompt says: "Row 1: Invoice Ref". Wait, in the metadata section.
-        // Let's assume the dynamic content (Invoice Ref, Date) MUST exist.
-        // That was Row 6 in Text Mode.
-        // In Image Mode (A1:G6), Row 6 is covered.
-        // So Dynamic Content must start at Row 7.
-    }
 
     const refRow = contentStartRow;
 

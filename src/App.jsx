@@ -51,45 +51,65 @@ function App() {
     <div className="min-h-screen bg-slate-100 p-6 font-sans text-slate-800">
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* Header Section */}
-        <header className="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Internal Invoice Generator</h1>
-            <p className="text-slate-500">Raema Solar - Automated Billing System</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-end">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1">Header Image (Optional)</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        {/* Header Section (Preview & Controls) */}
+        <header className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-6">
+          <div className="relative w-full flex flex-col items-center text-center">
+            {headerImage && (
+              <img
+                src={headerImage}
+                alt="Logo"
+                className="absolute left-0 top-0 h-20 w-auto object-contain"
               />
-            </div>
-            <div className="flex flex-col items-end">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1">Signature Stamp (Optional)</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => setSignatureImage(reader.result);
-                    reader.readAsDataURL(file);
-                  }
-                }}
-                className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-            </div>
-            <button
-              onClick={handleDownload}
-              className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md active:scale-95"
+            )}
+            <h1
+              className="text-2xl md:text-3xl lg:text-4xl font-bold text-red-600 uppercase tracking-wide"
+              style={{ textShadow: '1px 1px 0px #FFFF00, -1px -1px 0px #FFFF00, 1px -1px 0px #FFFF00, -1px 1px 0px #FFFF00' }}
             >
-              <Download size={20} />
-              Download Excel
-            </button>
+              RAEMA STAR SOLAR PRIVATE LIMITED
+            </h1>
+            <div className="text-xs md:text-sm text-black mt-2 space-y-1">
+              <p>K-7, LEELA HOMES, PLOT NO. 23, SECTOR-4, VAISHALI, GHAZIABAD 201 010 NCR India.</p>
+              <p>TEL NO. : 0120-4523496, +91 995 8469 555, WebPage : www.raemasolar.com, manish@raemasolar.com</p>
+              <p>CIN: U74999UP2017PTC098649, PAN: AAICR6230L, GSTIN : 09AAICR6230L1ZO</p>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center w-full pt-4 border-t border-slate-100">
+            <div className="text-sm font-semibold text-slate-500">Internal Generator Controls</div>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-end">
+                <label className="text-xs font-semibold text-slate-500 uppercase mb-1">Header Logo (Top-Left)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+              <div className="flex flex-col items-end">
+                <label className="text-xs font-semibold text-slate-500 uppercase mb-1">Signature Stamp (Optional)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => setSignatureImage(reader.result);
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+              <button
+                onClick={handleDownload}
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md active:scale-95"
+              >
+                <Download size={20} />
+                Download Excel
+              </button>
+            </div>
           </div>
         </header>
 

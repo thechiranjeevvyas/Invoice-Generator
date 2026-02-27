@@ -1,14 +1,14 @@
 export const companyInfo = {
     name: "Raema Solar",
-    address: "Head Office: 123, Solar Tech Park, Renewable City - 400001",
-    pan: "ABCDE1234F",
-    gstin: "27ABCDE1234F1Z5",
-    email: "info@raemasolar.com",
-    phone: "+91 98765 43210",
+    address: "K-7 LEELA HOMES , PLOT NO-23 , SECTOR-4 , VAISHALI , GHAZIABAD 201010",
+    pan: "AAICR6230L",
+    gstin: "09AAICR6230L1Z0",
+    email: "manish@raemasolar.com",
+    phone: "+91 9958469555",
     bankDetails: {
-        bankName: "HDFC Bank",
-        accountNo: "50200012345678",
-        ifsc: "HDFC0001234",
-        branch: "Solar City Branch"
+        bankName: "ICICI Bank SECTOR-IV , VAISHALI , GHAZIABAD 201010",
+        accountNo: "125405000619",
+        ifsc: "ICIC0001254",
+        branch: "Vaishali"
     }
 };
