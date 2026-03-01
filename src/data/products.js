@@ -26,8 +26,8 @@ export const products = [
         pole_type: "TELESCOPIC EXTENDABLE POLE",
         power_type: "NONE",
         hsn: "96039000",
-        price: 1500,
-        default_price: 1500,
+        price: 1950,
+        default_price: 1950,
         default_gst_percentage: 18
     },
     {
@@ -39,7 +39,7 @@ export const products = [
         pole_type: "TELESCOPIC EXTENDABLE POLE",
         power_type: "NONE",
         hsn: "96039000",
-        price: 2500,
+        price: 2575,
         default_price: 2500,
         default_gst_percentage: 18
     },
@@ -52,8 +52,8 @@ export const products = [
         pole_type: "TELESCOPIC EXTENDABLE POLE",
         power_type: "NONE",
         hsn: "96039000",
-        price: 3500,
-        default_price: 3500,
+        price: 3575,
+        default_price: 3575,
         default_gst_percentage: 18
     },
     {
@@ -65,8 +65,8 @@ export const products = [
         pole_type: "TELESCOPIC EXTENDABLE POLE",
         power_type: "NONE",
         hsn: "96039000",
-        price: 1200,
-        default_price: 1200,
+        price: 1650,
+        default_price: 1650,
         default_gst_percentage: 18
     },
     {
